@@ -15,36 +15,60 @@ namespace LinkInsertionAlgorithm
                 <p>Это первый абзац текста. Он состоит из трех предложений. Это первое предложение. Это второе предложение? Это третье предложение!</p>
                 <h2>Подзаголовок</h2>
                 <p>А это второй абзац текста, он в отличие от первого состоит из двух предложений. Это первое. <a href='http://test0.com'>Эта ссылка тут изначально. Она состоит из двух предложений</a>. А это второе.</p>
-                <p>Это третий абзац текста. Он состоит из трех предложений. Это первое предложение. Это второе предложение? Это третье предложение!</p>";
+                <p>Это третий абзац текста. Он состоит из трех предложений. Это первое предложение. Это второе предложение? Это третье предложение!</p>
+                <p>Это четвертый абзац текста. В нем интересное предложение. Эта <a href=’http://test0.com’>ссылка</a> тут изначально. А это уже новое предложение.</p>
+                <p>Это пятый абзац текста. В нем еще интереснее ссылка. Вот такая <a href=’http://test0.com’>ссылка</a>. А это уже новое предложение после ссылки.</p>"; 
 
             //text = Regex.Replace(text, @"\s+", " ");
 
-            Console.Write("Количество ссылок для вставки в базовый текст: ");
+            bool repeat;
+            do
+            {
+                repeat = false;
+                Console.Clear();
 
-            int count = 0;
+                Console.Write("Количество ссылок для вставки в базовый текст: ");
 
-            int.TryParse(Console.ReadLine(), out count);
+                int count = 0;
 
-            List<string> links = GenerateLinks(count);
+                int.TryParse(Console.ReadLine(), out count);
 
-            string resultText = Algorithm.InsertLinks(text, links);
+                List<string> links = GenerateLinks(count);
 
-            Console.WriteLine("----------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("Базовый текст:");
-            Console.WriteLine(text);
+                string resultText = Algorithm.InsertLinks(text, links);
+
+                Console.WriteLine("----------------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("Базовый текст:");
+                Console.WriteLine(text);
 
 
-            Console.WriteLine("----------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("Текст после вставки ссылок:");
-            Console.WriteLine(resultText);
+                Console.WriteLine("----------------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("Текст после вставки ссылок:");
+                Console.WriteLine(resultText);
 
-            Console.ReadKey();
+                Console.WriteLine();
+                Console.Write("Повторить тест? (Yes - 1/ No - 0): ");
+
+                int temp;
+                if (int.TryParse(Console.ReadLine(), out temp))
+                {
+                    if (temp == 1)
+                    {
+                        repeat = true;
+                    }
+                    else
+                    {
+                        repeat = false;
+                    }
+                }
+            } while (repeat);
+            
         }
 
         public static List<string> GenerateLinks(int count)
         {
-            const string linkTemplate1 = "<a href='http://test{0}.com'>Это ссылка #{0}.</a>.";
-            const string linkTemplate2 = "<a href='http://test{0}.com'>Это ссылка #{0}. Она состоит из нескольких предложений</a>.";
+            const string linkTemplate1 = " <a href='http://test{0}.com'>Это ссылка #{0}.</a>.";
+            const string linkTemplate2 = " <a href='http://test{0}.com'>Это ссылка #{0}. Она состоит из нескольких предложений</a>.";
 
             var result = new List<string>();
             Random rnd = new Random();

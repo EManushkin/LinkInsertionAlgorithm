@@ -12,37 +12,48 @@ namespace LinkInsertionAlgorithm
     {
         public static string InsertLinks(string text, IEnumerable<string> links)
         {
+            if (string.IsNullOrEmpty(text) || links == null || !links.Any())
+                return text;
+
+            string pattern = @"(\s*(?:[^<>\.]+?(?:<a .+?>.+?</a>)?[^<>\.]*?|<a .+?>.+?</a>)[\.\?\!])";
+            //string pattern = @"([^<>]+?(?:<a .+?>.+?</a>[^\.]{3})?[^<>]+?[\.\?\!]|\s*<a .+?>.+?</a>[\.\?\!])";
+
+            var rnd = new Random();
+
             var document = new HtmlDocument();
 
             document.LoadHtml(text);
 
             var paragraphNodes = document.DocumentNode.SelectNodes($"//p")?.ToList() ?? null;
 
-            string pattern = @"(\s*<a .+?>.+?</a>\.?|[^<>]+?\.)|(\s*<a .+?>.+?</a>\??|[^<>]+?\?)|(\s*<a .+?>.+?</a>!?|[^<>]+?!)";
+            if (paragraphNodes == null || !paragraphNodes.Any())
+                return text;
 
-            foreach (var item in paragraphNodes)
+            foreach (var link in links)
             {
-                string[] sentences = Regex.Split(item.InnerHtml, pattern).Where(s => !string.IsNullOrEmpty(s)).ToArray(); ;
-                foreach (string s in sentences)
-                {
-                    Console.WriteLine("{0}", s);
-                }
-                Console.WriteLine("----------------------------------------------------------------------------------------------------------------------");
+                var pIndex = rnd.Next(0, paragraphNodes.Count);
+
+                string[] sentences = Regex.Split(paragraphNodes[pIndex].InnerHtml, pattern).Where(s => !string.IsNullOrEmpty(s)).ToArray();
+
+                var sIndex = rnd.Next(0, sentences.Length + 1);
+
+                var pos = sIndex != sentences.Length ? paragraphNodes[pIndex].InnerHtml.IndexOf(sentences[sIndex]) : paragraphNodes[pIndex].InnerHtml.Length;
+
+                paragraphNodes[pIndex].InnerHtml = paragraphNodes[pIndex].InnerHtml.Insert(pos, link);
             }
-            
-
-            //paragraphNodes[0].InnerHtml = "test";
 
 
-
-            //if (nodes != null && nodes.Count > 0)
+            //foreach (var item in paragraphNodes)
             //{
-            //    return nodes.Select((x, i) => $"<a href='#article-text__subtitle--{i + 1}' class='article-header__anchor-link'>{x.InnerText}</a>").ToArray();
+            //    string[] sentences = Regex.Split(item.InnerHtml, pattern).Where(s => !string.IsNullOrEmpty(s)).ToArray(); ;
+            //    foreach (string s in sentences)
+            //    {
+            //        Console.WriteLine("{0}", s);
+            //    }
+            //    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------");
             //}
-            //return new string[] { };
-            string result = document.DocumentNode.InnerHtml;
 
-            return result;
+            return document.DocumentNode.InnerHtml;
         }
     }
 }
