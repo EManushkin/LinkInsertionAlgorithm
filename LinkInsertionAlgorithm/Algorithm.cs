@@ -16,7 +16,6 @@ namespace LinkInsertionAlgorithm
                 return text;
 
             string pattern = @"(\s*(?:[^<>\.]+?(?:<a .+?>.+?</a>)?[^<>\.]*?|<a .+?>.+?</a>)[\.\?\!])";
-            //string pattern = @"([^<>]+?(?:<a .+?>.+?</a>[^\.]{3})?[^<>]+?[\.\?\!]|\s*<a .+?>.+?</a>[\.\?\!])";
 
             var rnd = new Random();
 
@@ -41,17 +40,6 @@ namespace LinkInsertionAlgorithm
 
                 paragraphNodes[pIndex].InnerHtml = paragraphNodes[pIndex].InnerHtml.Insert(pos, link);
             }
-
-
-            //foreach (var item in paragraphNodes)
-            //{
-            //    string[] sentences = Regex.Split(item.InnerHtml, pattern).Where(s => !string.IsNullOrEmpty(s)).ToArray(); ;
-            //    foreach (string s in sentences)
-            //    {
-            //        Console.WriteLine("{0}", s);
-            //    }
-            //    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------");
-            //}
 
             return document.DocumentNode.InnerHtml;
         }
