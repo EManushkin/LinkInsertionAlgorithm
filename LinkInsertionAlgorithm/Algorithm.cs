@@ -38,7 +38,7 @@ namespace LinkInsertionAlgorithm
 
                 var pos = sIndex != sentences.Length ? paragraphNodes[pIndex].InnerHtml.IndexOf(sentences[sIndex]) : paragraphNodes[pIndex].InnerHtml.Length;
 
-                paragraphNodes[pIndex].InnerHtml = paragraphNodes[pIndex].InnerHtml.Insert(pos, link);
+                paragraphNodes[pIndex].InnerHtml = paragraphNodes[pIndex].InnerHtml.Insert(pos, (pos == 0 ? "" : " ") + link + (sIndex == sentences.Length ? "" : " ")).Replace("  ", " ");
             }
 
             return document.DocumentNode.InnerHtml;

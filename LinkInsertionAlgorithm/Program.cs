@@ -67,8 +67,8 @@ namespace LinkInsertionAlgorithm
 
         public static List<string> GenerateLinks(int count)
         {
-            const string linkTemplate1 = " <a href='http://test{0}.com'>Это ссылка #{0}.</a>.";
-            const string linkTemplate2 = " <a href='http://test{0}.com'>Это ссылка #{0}. Она состоит из нескольких предложений</a>.";
+            const string linkTemplate1 = "<a href='http://test{0}.com'>Это ссылка #{0}.</a>.";
+            const string linkTemplate2 = "<a href='http://test{0}.com'>Это ссылка #{0}. Она состоит из нескольких предложений</a>.";
 
             var result = new List<string>();
             Random rnd = new Random();
